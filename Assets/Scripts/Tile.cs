@@ -24,6 +24,17 @@ public class Tile
     public int Row { get; }
     public Vector3 TilePosition { get; }
 
+    private IPlaceable _placeable;
+    private IPlaceable PlaceableObject
+    {
+        get => _placeable;
+        set
+        {
+            _placeable = value;
+            Occupied = _placeable != null;
+        }
+    }
+
     private string _tileName;
     
     public Tile(GameObject gameObject, int column, int row)
@@ -35,5 +46,17 @@ public class Tile
         _tileName = "Tile " + column + " : " + row;
         TileGameObject.name = _tileName;
         TilePosition = TileGameObject.transform.position;
+    }
+
+    public Tile Place(IPlaceable targetObject)
+    {
+        PlaceableObject = targetObject;
+        return this;
+    }
+    
+    public Tile Remove(IPlaceable targetObject)
+    {
+        PlaceableObject = null;
+        return this;
     }
 }
