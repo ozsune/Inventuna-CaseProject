@@ -6,12 +6,14 @@ using Object = UnityEngine.Object;
 
 public class Spawn
 {
-    public Spawn(GameObject spawnPrefab, Tile tile, Transform parent)
+    public Spawn(GameObject spawnPrefab, Tile tile)
     {
         if (spawnPrefab.TryGetComponent(out IPlaceable placeable))
         {
             var spawn = Object.Instantiate(spawnPrefab);
-            spawn.GetComponent<IPlaceable>().CurrentTile = tile;
+            
+            var placer = new ObjectPlacer(spawn.GetComponent<IPlaceable>());
+            placer.Place(tile, !tile.Occupied);
         }
         else Debug.LogError("Spawned Object is not Placeable!");
     }

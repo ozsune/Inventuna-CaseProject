@@ -5,28 +5,20 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IPlaceable
 {
-    private IPlaceable _placeable;
-    public IPlaceable PlaceableType
+    public GameObject PlaceObject { get; private set; }
+    public Tile CurrentTile { get; set; }
+    public ObjectPlacer Placer { get; private set; }
+
+    private void Awake()
     {
-        get => this;
-        private set => _placeable = value;
+        Placer = new ObjectPlacer(this);
+
+        PlaceObject = gameObject;
     }
     
-    private Tile _tile;
-    public Tile CurrentTile
+    public void SetTile(Tile tile)
     {
-        get => _tile;
-        set
-        {
-            _tile = value.Place(PlaceableType);
-            SetPosition();
-        }
+        CurrentTile = tile;
     }
-    
-    private void SetPosition()
-    {
-        transform.position = CurrentTile.TilePosition;
-        transform.parent = CurrentTile.TileGameObject.transform;
-    }
-    
+
 }

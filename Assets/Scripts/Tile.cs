@@ -6,6 +6,11 @@ using UnityEngine.Serialization;
 
 public class Tile
 {
+    public GameObject TileObject { get; }
+    public int Column { get; }
+    public int Row { get; }
+    public Vector3 TilePosition { get; }
+    
     private bool _occupied;
     public bool Occupied 
     { 
@@ -15,48 +20,56 @@ public class Tile
             _occupied = value;
             var occupied = "-(OCCUPIED)";
             if (_occupied)
-                TileGameObject.name += occupied;
-            else TileGameObject.name = _tileName;
+                TileObject.name += occupied;
+            else TileObject.name = _tileName;
         } 
     }
-    public GameObject TileGameObject { get; }
-    public int Column { get; }
-    public int Row { get; }
-    public Vector3 TilePosition { get; }
 
-    private IPlaceable _placeable;
-    private IPlaceable PlaceableObject
-    {
-        get => _placeable;
+    private bool _enabled;
+    public bool Enabled 
+    { 
+        get => _enabled; 
         set
         {
-            _placeable = value;
-            Occupied = _placeable != null;
-        }
+            _enabled = value;
+            var disabled = "-(DISABLED)";
+            if (_occupied)
+                TileObject.name += disabled;
+            else TileObject.name = _tileName;
+        } 
     }
-
+    
+    private IPlaceable Placeable;
     private string _tileName;
     
-    public Tile(GameObject gameObject, int column, int row)
+    public Tile(GameObject tileObject, int column, int row)
     {
         Column = column;
         Row = row;
         
-        TileGameObject = gameObject;
         _tileName = "Tile " + column + " : " + row;
-        TileGameObject.name = _tileName;
-        TilePosition = TileGameObject.transform.position;
+
+        TileObject = tileObject;
+        TileObject.name = _tileName;
+        TilePosition = TileObject.transform.position;
+        Enabled = true;
     }
 
-    public Tile Place(IPlaceable targetObject)
+    public void Place(IPlaceable placeable)
     {
-        PlaceableObject = targetObject;
-        return this;
+        Placeable = placeable;
+        Placeable.SetTile(this);
+        
+        Placeable.PlaceObject.transform.position = TilePosition;
+        Placeable.PlaceObject.transform.parent = TileObject.transform;
+        
+        Occupied = true;
     }
     
-    public Tile Remove(IPlaceable targetObject)
+    public void Remove()
     {
-        PlaceableObject = null;
-        return this;
+        Placeable = null;
+        Occupied = false;
+        
     }
 }

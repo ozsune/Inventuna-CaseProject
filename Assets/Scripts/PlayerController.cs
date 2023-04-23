@@ -1,31 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IPlaceable
 {
-    private IPlaceable _placeable;
-    public IPlaceable PlaceableType
+    public GameObject PlaceObject { get; private set; }
+    public Tile CurrentTile { get; private set; }
+    public ObjectPlacer Placer { get; private set; }
+
+    void Awake()
     {
-        get => this;
-        private set => _placeable = value;
-    }
-    
-    private Tile _tile;
-    public Tile CurrentTile
-    {
-        get => _tile;
-        set
-        {
-            _tile?.Remove(PlaceableType);
-            _tile = value.Place(PlaceableType);
-            SetPosition();
-        }
+        Placer = new ObjectPlacer(this);
+
+        PlaceObject = gameObject;
+        StartCoroutine(MovePosition());
     }
 
-    private void SetPosition()
+    public void SetTile(Tile tile)
     {
-        transform.position = CurrentTile.TilePosition;
-        transform.parent = CurrentTile.TileGameObject.transform;
+        CurrentTile = tile;
     }
+    
+    private IEnumerator MovePosition()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+
+            var direction = (Grid.Directions)Random.Range(0, 4);
+            var neighborTiles = Grid.GetNeighborTiles(CurrentTile, direction);
+
+            if(!neighborTiles.ContainsKey(direction)) continue;
+
+            Placer.Place(neighborTiles[direction], neighborTiles[direction].Enabled);
+        }
+    }
+    
+    
 }

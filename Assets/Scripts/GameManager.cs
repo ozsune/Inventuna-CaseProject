@@ -14,10 +14,6 @@ public class GameManager : MonoBehaviour
 
     private void SpawnEntity(GameObject spawn)
     {
-        Tile selectedTile;
-        do selectedTile = Grid.TileBase[Random.Range(0, Grid.Height), Random.Range(0, Grid.Width)];
-        while (selectedTile.Occupied);
-        
-        _spawner = new Spawn(spawn, selectedTile, null);
+        _spawner = new Spawn(spawn, Grid.FindRandomTile());
     }
 }

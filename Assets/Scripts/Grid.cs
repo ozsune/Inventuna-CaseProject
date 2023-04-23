@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class Grid
 {
@@ -17,24 +20,32 @@ public class Grid
       GenerateGrid(tileObject, tileOffset, spawnPosition, parent);
    }
 
-   public static Tile GetNeighborTile(Tile currentTile, Directions direction)
+   public static IDictionary<Directions, Tile> GetNeighborTiles(Tile currentTile, Directions direction)
    {
       var up = currentTile.Column + 1;
       var down = currentTile.Column - 1;
       var left = currentTile.Row - 1;
       var right = currentTile.Row + 1;
       
-      var neighborTile = new Dictionary<Directions, Tile>();
+      var neighborTiles = new Dictionary<Directions, Tile>();
       if(up < Height)
-         neighborTile.Add(Directions.Up, TileBase[up, currentTile.Row]);
+         neighborTiles.Add(Directions.Up, TileBase[up, currentTile.Row]);
       if(down >= 0)
-         neighborTile.Add(Directions.Down, TileBase[down, currentTile.Row]);
+         neighborTiles.Add(Directions.Down, TileBase[down, currentTile.Row]);
       if(right < Width)
-         neighborTile.Add(Directions.Right, TileBase[currentTile.Column, right]);
+         neighborTiles.Add(Directions.Right, TileBase[currentTile.Column, right]);
       if(left >= 0)
-         neighborTile.Add(Directions.Left, TileBase[currentTile.Column, left]);
+         neighborTiles.Add(Directions.Left, TileBase[currentTile.Column, left]);
       
-      return neighborTile[direction];
+      return neighborTiles;
+   }
+
+   public static Tile FindRandomTile()
+   {
+      Tile selectedTile;
+      do selectedTile = TileBase[Random.Range(0, Height), Random.Range(0, Width)];
+      while (selectedTile.Occupied);
+      return selectedTile;
    }
 
    private void GenerateGrid(GameObject tileObject, float tileOffset, Vector3 spawnPosition, Transform parent)
