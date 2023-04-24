@@ -31,7 +31,7 @@ public class Tile
 
             if (!_enabled)
             {
-                TileObject.GetComponentInChildren<Renderer>().material.color = Color.red;
+                SetColor(Color.red);
                 TileObject.name += disabled;
             }
             else TileObject.name = _tileName;
@@ -54,6 +54,11 @@ public class Tile
         TileObject.name = _tileName;
         TilePosition = TileObject.transform.position;
         Enabled = true;
+    }
+
+    public void SetColor(Color color)
+    {
+        TileObject.GetComponentInChildren<Renderer>().material.color = color;
     }
 
     public void Place(IPlaceable placeable)
