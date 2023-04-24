@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class PlayerController : MonoBehaviour, IPlaceable
+public class PlayerController : MonoBehaviour, IPlaceable, IPathFinder
 {
+    public event Action onPathComplete;
     public GameObject PlaceObject { get; private set; }
     public Tile CurrentTile { get; private set; }
     public Tile DestinationTile { get; private set; }
@@ -26,8 +25,8 @@ public class PlayerController : MonoBehaviour, IPlaceable
     {
         CurrentTile = tile;
     }
-    
-    private IEnumerator MovePosition()
+
+    public IEnumerator MovePosition()
     {
         DestinationTile = FindObjectOfType<EnemyController>().CurrentTile;
         
@@ -38,11 +37,13 @@ public class PlayerController : MonoBehaviour, IPlaceable
         
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
             
             Placer.Place(path.heuristicPath[pathIndex], path.heuristicPath[pathIndex].Enabled);
             
-            if(pathIndex < path.heuristicPath.Count - 1)
+            if(CurrentTile == path.heuristicPath[^1])
+                onPathComplete?.Invoke();
+            else
                 pathIndex++;
         }
     }
