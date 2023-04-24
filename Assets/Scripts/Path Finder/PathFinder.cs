@@ -9,19 +9,21 @@ public class PathFinder
     private PathNode _startNode, _currentNode, _targetNode;
     private Dictionary<Tile, PathNode> pathDictionary = new();
     
-    public PathFinder(Tile startTile, Tile targetTile)
+    public PathFinder()
     {
-        foreach (var node in Grid.TileBase)
-            pathDictionary.Add(node, new PathNode(node));
-        
-        _startNode = pathDictionary[startTile];
-        _targetNode = pathDictionary[targetTile];
+        foreach (var tile in Grid.TileBase)
+        {
+            pathDictionary.Add(tile, new PathNode(tile));
+        }
     }
 
-    public void FindPath()
+    public void FindPath(Tile startTile, Tile targetTile)
     {
         var openSet = new List<PathNode>();
         var closedSet = new HashSet<PathNode> ();
+        
+        _startNode = pathDictionary[startTile];
+        _targetNode = pathDictionary[targetTile];
         
         openSet.Add(_startNode);
 
@@ -38,12 +40,6 @@ public class PathFinder
 
             openSet.Remove(_currentNode);
             closedSet.Add(_currentNode);
-
-            if (_currentNode == _targetNode)
-            {
-                GetFinalPath(_startNode, _targetNode);
-                return;
-            }
 
             var neighborTiles = Grid.GetNeighborTiles(_currentNode.Tile);
 
@@ -63,6 +59,12 @@ public class PathFinder
                         openSet.Add(neighborNode);
                 }
             }
+            
+            if (_currentNode == _targetNode)
+            {
+                GetFinalPath(_startNode, _targetNode);
+                return;
+            }
         }
     }
 
@@ -71,7 +73,8 @@ public class PathFinder
         var finalPath = new List<PathNode>();
         var currentNode = endNode;
 
-        while (currentNode != startNode) {
+        while (currentNode != startNode) 
+        {
             finalPath.Add(currentNode);
             currentNode = currentNode.Parent;
         }
