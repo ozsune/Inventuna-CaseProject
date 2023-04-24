@@ -8,13 +8,16 @@ public class Grid
    public static Tile[,] TileBase { get; private set; }
    public static int Height { get; private set; }
    public static int Width { get; private set; }
+
+   private const float TileOffset = 2;
+   private readonly Vector3 _spawnPosition = Vector3.zero;
    
-   public Grid(GameObject tileObject ,int height, int width, float tileOffset, Vector3 spawnPosition, Transform parent)
+   public Grid(GameObject tileObject ,int height, int width, Transform parent)
    {
       Height = height;
       Width = width;
       
-      GenerateGrid(tileObject, tileOffset, spawnPosition, parent);
+      GenerateGrid(tileObject, TileOffset, _spawnPosition, parent);
    }
 
    public static IEnumerable<Tile> GetNeighborTiles(Tile currentTile)
@@ -33,7 +36,6 @@ public class Grid
          neighborTiles.Add(TileBase[currentTile.Column, right]);
       if(left >= 0)
          neighborTiles.Add(TileBase[currentTile.Column, left]);
-
       
       return neighborTiles;
    }
@@ -43,6 +45,7 @@ public class Grid
       Tile selectedTile;
       do selectedTile = TileBase[Random.Range(0, Height), Random.Range(0, Width)];
       while (selectedTile.Occupied || !selectedTile.Enabled);
+      
       return selectedTile;
    }
 

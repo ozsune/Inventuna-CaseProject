@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
 public class GridGenerator : MonoBehaviour
 {
     public event Action onGridCreated;
@@ -17,7 +16,7 @@ public class GridGenerator : MonoBehaviour
         this.width = width;
         
         var gridRoot = new GameObject("Grid");
-        var grid = new Grid(tilePrefab, height, width, offset, generatingPosition, gridRoot.transform);
+        var grid = new Grid(tilePrefab, height, width, gridRoot.transform);
         
         onGridCreated?.Invoke();
     }
