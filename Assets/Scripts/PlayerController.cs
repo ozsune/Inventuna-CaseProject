@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour, IPlaceable
         
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             
             Placer.Place(path.heuristicPath[pathIndex], path.heuristicPath[pathIndex].Enabled);
             pathIndex++;

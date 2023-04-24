@@ -15,7 +15,6 @@ public class EnemyController : MonoBehaviour, IPlaceable
     
     public void SetTile(Tile tile)
     {
-        Debug.Log("Current Tile !!");
         CurrentTile = tile;
     }
 

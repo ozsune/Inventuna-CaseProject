@@ -8,7 +8,6 @@ public class Grid
    public static Tile[,] TileBase { get; private set; }
    public static int Height { get; private set; }
    public static int Width { get; private set; }
-   public enum Directions {Up, Down, Left, Right}
    
    public Grid(GameObject tileObject ,int height, int width, float tileOffset, Vector3 spawnPosition, Transform parent)
    {
