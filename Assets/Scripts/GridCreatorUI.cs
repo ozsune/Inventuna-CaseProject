@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +13,7 @@ public class GridCreatorUI : MonoBehaviour
     public void Create()
     {
         gridGenerator.Generate((int)heightSlider.value, (int)widthSlider.value);
+        gameObject.SetActive(false);
     }
     
     public void Start()
