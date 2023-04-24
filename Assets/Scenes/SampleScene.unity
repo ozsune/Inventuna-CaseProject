@@ -156,6 +156,7 @@ MonoBehaviour:
     type: 3}
   EnemyPrefab: {fileID: 5624965341587454024, guid: cd664dc72a0a5ae41a6eebccef0cedca,
     type: 3}
+  gridGenerator: {fileID: 463383293}
 --- !u!4 &46349782
 Transform:
   m_ObjectHideFlags: 0
