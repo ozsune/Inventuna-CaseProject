@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IPathFinder
 {
     public event Action onPathComplete;
+    public event Action onPathFail;
     public bool Move { get; set; }
     public IEnumerator MovePosition();
 }

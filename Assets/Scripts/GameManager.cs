@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static int totalCompetedPaths;
-    
+
+    [SerializeField] private GameObject gridCreatorUI, gameOverUI;
     [SerializeField] private GameObject PlayerPrefab, EnemyPrefab;
     [SerializeField] private GridGenerator gridGenerator;
 
@@ -13,6 +14,9 @@ public class GameManager : MonoBehaviour
     
     void Awake()
     {
+        totalCompetedPaths = 0;
+
+        gridCreatorUI.SetActive(true);
         gridGenerator.onGridCreated += StartNewGame;
     }
     
@@ -35,6 +39,7 @@ public class GameManager : MonoBehaviour
         {
             pathFinder.Move = true;
             pathFinder.onPathComplete += DeSpawnEntity;
+            pathFinder.onPathFail += GameOver;
         }
     }
 
@@ -45,5 +50,10 @@ public class GameManager : MonoBehaviour
 
         totalCompetedPaths++;
         Invoke(nameof(StartNewGame), 1);
+    }
+
+    private void GameOver()
+    {
+        gameOverUI.SetActive(true);
     }
 }
