@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject PlayerPrefab, EnemyPrefab;
     [SerializeField] private GridGenerator gridGenerator;
 
-    private List<Spawner> _spawners = new();
+    private HashSet<Spawner> _spawners = new();
     
     void Awake()
     {
@@ -19,18 +19,21 @@ public class GameManager : MonoBehaviour
     public void StartNewGame()
     {
         _spawners.Clear();
-        SpawnEntity(PlayerPrefab);
+        
         SpawnEntity(EnemyPrefab);
+        SpawnEntity(PlayerPrefab);
     }
     
     private void SpawnEntity(GameObject spawn)
     {
         var spawner = new Spawner(spawn);
-        _spawners.Add(spawner);
         
+        _spawners.Add(spawner);
         spawner.Spawn(Grid.FindRandomAvailableTile());
+
         if (spawner.SpawnedObject.TryGetComponent(out IPathFinder pathFinder))
         {
+            pathFinder.Move = true;
             pathFinder.onPathComplete += DeSpawnEntity;
         }
     }
@@ -41,6 +44,6 @@ public class GameManager : MonoBehaviour
             s.DeSpawn();
 
         totalCompetedPaths++;
-        StartNewGame();
+        Invoke(nameof(StartNewGame), 1);
     }
 }

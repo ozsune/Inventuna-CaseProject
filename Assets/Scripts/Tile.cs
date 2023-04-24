@@ -7,7 +7,6 @@ public class Tile
     public int Row { get; }
     public Vector3 TilePosition { get; }
     
-    private bool _occupied;
     public bool Occupied 
     { 
         get => _occupied;
@@ -21,7 +20,6 @@ public class Tile
         } 
     }
 
-    private bool _enabled;
     public bool Enabled 
     { 
         get => _enabled; 
@@ -29,12 +27,19 @@ public class Tile
         {
             _enabled = value;
             var disabled = "-(DISABLED)";
-            if (_occupied)
+            TileObject.name = _tileName;
+
+            if (!_enabled)
+            {
+                TileObject.GetComponentInChildren<Renderer>().material.color = Color.red;
                 TileObject.name += disabled;
+            }
             else TileObject.name = _tileName;
         } 
     }
     
+    private bool _occupied;
+    private bool _enabled;
     private IPlaceable Placeable;
     private string _tileName;
     

@@ -17,10 +17,10 @@ public class Spawner
     public void Spawn(Tile tile)
     {
         SpawnedObject = Object.Instantiate(_spawnPrefab);
-        _placeable = SpawnedObject.GetComponent<IPlaceable>();    
+        _placeable = SpawnedObject.GetComponent<IPlaceable>();
 
         _placer = new ObjectPlacer(_placeable);
-        _placer.Place(tile, !tile.Occupied);
+        _placer.Place(tile);
     }
 
     public void DeSpawn()

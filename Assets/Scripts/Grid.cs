@@ -17,7 +17,7 @@ public class Grid
       GenerateGrid(tileObject, tileOffset, spawnPosition, parent);
    }
 
-   public static IList<Tile> GetNeighborTiles(Tile currentTile)
+   public static IEnumerable<Tile> GetNeighborTiles(Tile currentTile)
    {
       var up = currentTile.Column + 1;
       var down = currentTile.Column - 1;
@@ -42,7 +42,7 @@ public class Grid
    {
       Tile selectedTile;
       do selectedTile = TileBase[Random.Range(0, Height), Random.Range(0, Width)];
-      while (selectedTile.Occupied);
+      while (selectedTile.Occupied || !selectedTile.Enabled);
       return selectedTile;
    }
 

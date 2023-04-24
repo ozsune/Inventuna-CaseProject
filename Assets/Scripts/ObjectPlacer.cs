@@ -8,7 +8,7 @@ public class ObjectPlacer
       Placeable = placeableType;
    }
    
-   public void Place(Tile placingTile, bool placeCondition)
+   public void Place(Tile placingTile)
    {
       Placeable.CurrentTile?.Remove();
       placingTile.Place(Placeable);
