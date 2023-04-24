@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPlacer
@@ -13,14 +10,7 @@ public class ObjectPlacer
    
    public void Place(Tile placingTile, bool placeCondition)
    {
-      if (placeCondition)
-      {
-         Placeable.CurrentTile?.Remove();
-         placingTile.Place(Placeable);
-      }
-      else
-      {
-         Debug.Log("Tile is not available.");
-      }
+      Placeable.CurrentTile?.Remove();
+      placingTile.Place(Placeable);
    }
 }

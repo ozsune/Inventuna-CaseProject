@@ -12,10 +12,15 @@ public class PlayerController : MonoBehaviour, IPlaceable
 
     void Awake()
     {
-        Placer = new ObjectPlacer(this);
-
         PlaceObject = gameObject;
+
+        Placer = new ObjectPlacer(this);
+    }
+
+    private void Start()
+    {
         StartCoroutine(MovePosition());
+
     }
 
     public void SetTile(Tile tile)
@@ -25,16 +30,18 @@ public class PlayerController : MonoBehaviour, IPlaceable
     
     private IEnumerator MovePosition()
     {
+        Debug.Log(CurrentTile.TileObject.name);
+        var path = new PathFinder(CurrentTile, FindObjectOfType<EnemyController>().CurrentTile);
+        path.FindShortestPath();
+        var pathIndex = 0;
+        
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
+            
+            Placer.Place(path.heuristicPath[pathIndex], path.heuristicPath[pathIndex].Enabled);
+            pathIndex++;
 
-            var direction = (Grid.Directions)Random.Range(0, 4);
-            var neighborTiles = Grid.GetNeighborTiles(CurrentTile, direction);
-
-            if(!neighborTiles.ContainsKey(direction)) continue;
-
-            Placer.Place(neighborTiles[direction], neighborTiles[direction].Enabled);
         }
     }
     

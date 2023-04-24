@@ -13,6 +13,7 @@ public class Spawn
             var spawn = Object.Instantiate(spawnPrefab);
             
             var placer = new ObjectPlacer(spawn.GetComponent<IPlaceable>());
+            Debug.Log(placer.Placeable.PlaceObject.name);
             placer.Place(tile, !tile.Occupied);
         }
         else Debug.LogError("Spawned Object is not Placeable!");
