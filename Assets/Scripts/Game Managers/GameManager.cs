@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
         _camera = Camera.main.GetComponent<CameraController>();
         
         gridCreatorUI.SetActive(true);
+        gameOverUI.SetActive(false);
+
         gridGenerator.onGridCreated += StartNewGame;
     }
     
