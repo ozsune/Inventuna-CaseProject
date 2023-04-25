@@ -10,11 +10,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GridGenerator gridGenerator;
 
     private HashSet<Spawner> _spawners = new();
-    
+    private CameraController _camera;
     void Awake()
     {
         totalCompetedPaths = 0;
-
+        _camera = Camera.main.GetComponent<CameraController>();
+        
         gridCreatorUI.SetActive(true);
         gridGenerator.onGridCreated += StartNewGame;
     }
@@ -37,6 +38,8 @@ public class GameManager : MonoBehaviour
         if (spawner.SpawnedObject.TryGetComponent(out IPathFinder pathFinder))
         {
             pathFinder.Move = true;
+            _camera.SetTarget();
+
             pathFinder.onPathComplete += DeSpawnEntity;
             pathFinder.onPathFail += GameOver;
         }
